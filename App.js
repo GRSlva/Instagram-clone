@@ -47,19 +47,16 @@ export function Login({changePage}){
   let exit = "<"
 
   function doLogin(){
-    for(let i = 0; i < emailList.length; i++){
-      if (login == emailList[i] && password == "12345"){
-        changePage("Feed");
-      }else{
-        if (login != emailList[i]){
-          alert(emailList[i]);
-        }
-        else{
-          alert('senha fudida');
-        }
+    if (login == "email@gmail.com" && password == "12345"){
+      changePage("Feed");
+    }else{
+      if (login != "email@gmail.com"){
+        alert('email fudido');
+      }
+      else{
+        alert('senha fudida');
       }
     }
-    
   }
 
   const [loaded, error] = useFonts({
