@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFonts } from "expo-font";
 import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput, ScrollView } from "react-native";
 
 let Post = () => {
@@ -38,7 +39,68 @@ let Post = () => {
   );
 };
 
-export default function App(){
+
+export function Login({changePage}){
+  let emailList = ['email1', 'email2']
+  let [login, setlogin] = useState("");
+  let [password, setpassword] = useState("");
+  let exit = "<"
+
+  function doLogin(){
+    for(let i = 0; i < emailList.length; i++){
+      if (login == emailList[i] && password == "12345"){
+        changePage("Feed");
+      }else{
+        if (login != emailList[i]){
+          alert(emailList[i]);
+        }
+        else{
+          alert('senha fudida');
+        }
+      }
+    }
+    
+  }
+
+  const [loaded, error] = useFonts({
+    'Reem-kufi-fun': require('./assets/instagram wow/fonts/Reem_Kufi_Fun/reemkufifun.ttf'),
+  });
+
+  return(
+    <View style={stylesLogin.background}>
+
+      <View style={stylesLogin.menuArea}>
+        <Text>
+          {exit}
+        </Text>
+
+      </View>
+
+      <Text style={stylesLogin.text}>Português(Brasil)</Text>
+      <Image style={stylesLogin.logo} source={require("./assets/instagram wow/logoLogin.png")}></Image>
+
+      <TextInput style={stylesLogin.input} placeholder="Nome de usuário, email..." onChangeText={setlogin}></TextInput>
+      <TextInput style={stylesLogin.input} placeholder="Senha..." onChangeText={setpassword}></TextInput>
+
+      <TouchableOpacity style={stylesLogin.loginButton} onPress={doLogin}> 
+        <Text style={stylesLogin.loginButtonText}>Entrar</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Text style={stylesLogin.loginButtonText}>Esqueceu sua senha?</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={stylesLogin.loginButtonAccount}>
+        <Text style={stylesLogin.loginButtonTextAccount}>Criar nova conta</Text>
+      </TouchableOpacity>
+
+    </View>
+
+  );
+
+}
+
+export function Feed(){
 
   return (
     <View style={stylesFeed.background}>
@@ -62,6 +124,80 @@ export default function App(){
     </View>
   );
 }
+
+let stylesLogin = StyleSheet.create({
+  background:{
+      flex: 1,
+      backgroundColor: '#152C6D',
+      alignItems: 'center',
+  },
+  menuArea: {
+    height: 55,
+    flexDirection: 'row',
+    padding: 5,
+  },
+  text: {
+    color: '#fff',
+    fontFamily: 'Reem-kufi-fun',
+    fontSize: 20,
+    marginTop:90,
+  },
+  logo:{
+    height:75,
+    width:75,
+    marginTop:70,
+    marginBottom:70,
+  },
+  input:{
+    width:300,
+    height:50,
+    backgroundColor: '#384680',
+    borderRadius: 9,
+    borderWidth: 2,
+    borderColor: '#A39F9F',
+    padding:10,
+    marginBottom: 20,
+    color: "#A39F9F",
+  },
+
+  loginButton: {
+    width: 300,
+    height: 40,
+    backgroundColor: '#1889F2',
+    borderWidth: 2,
+    borderRadius: 50,
+    borderColor: "#1889F2",
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15
+  },
+  loginButtonText: {
+    color: "white",
+    fontSize: 16
+  },
+
+  loginButtonTextPassword: {
+    color: "white",
+    fontSize: 16,
+  },
+
+  loginButtonTextAccount: {
+    color: "#1889F2",
+    fontSize: 16,
+  },
+  
+  loginButtonAccount: {
+    width: 300,
+    height: 40,
+    backgroundColor: '#152C6D',
+    borderWidth: 2,
+    borderRadius: 50,
+    borderColor: "#1889F2",
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 70,
+  }
+});
 
 let stylesFeed = StyleSheet.create({
   background:{
@@ -135,5 +271,35 @@ let stylesFeed = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 5,
     marginBottom: 12,
+  }
+});
+
+export default function App(){
+  let [page, setpage] = useState('Login')
+
+  function changeToNewPage(newPage){
+    setpage(newPage);
+  }
+
+  function render(){
+    if (page == 'Login'){
+      return <Login changePage={changeToNewPage}></Login>
+    }
+    if (page == 'Feed'){
+      return <Feed></Feed>
+
+    }
+  }
+
+  return(
+    <View style={stylesApp.App}>
+      {render()}
+    </View>
+  )
+}
+
+const stylesApp = StyleSheet.create({
+  App:{
+    flex:1,
   }
 })
